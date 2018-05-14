@@ -36,23 +36,23 @@ def metadata(uploader, metadata_csv, sample_names):
 
 @upload.command()
 @add_authorization()
-@click.option('-g', '--group', default=None)
-@click.option('--group-name', default=None)
-def datasuper(uploader, group, group_name):
+@click.option('-u', '--group-uuid', default=None)
+@click.option('-g', '--group-name', default=None)
+def datasuper(uploader, group_uuid, group_name):
     """Upload all samples from DataSuper repo."""
-    sample_source = DataSuperSource()
+    sample_source = DataSuperSource(group=group_name)
     samples = sample_source.get_sample_payloads()
 
-    batch_upload(uploader, samples, group_uuid=group, upload_group_name=group_name)
+    batch_upload(uploader, samples, group_uuid=group_uuid, upload_group_name=group_name)
 
 
 @upload.command()
 @add_authorization()
-@click.option('-g', '--group', default=None)
+@click.option('-u', '--group-uuid', default=None)
 @click.argument('result_files', nargs=-1)
-def files(uploader, group, result_files):
+def files(uploader, group_uuid, result_files):
     """Upload all samples from llist of tool result files."""
     sample_source = FileSource(files=result_files)
     samples = sample_source.get_sample_payloads()
 
-    batch_upload(uploader, samples, group_uuid=group)
+    batch_upload(uploader, samples, group_uuid=group_uuid)
