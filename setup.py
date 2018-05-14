@@ -5,6 +5,7 @@ from setuptools import find_packages, setup
 
 dependencies = [
     'click',
+    'click-log==0.2.1',
     'requests',
     'configparser',
     'pandas',

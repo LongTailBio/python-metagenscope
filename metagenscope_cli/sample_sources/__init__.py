@@ -1,6 +1,6 @@
 """Sources for sample data."""
 
-from sys import stderr
+from metagenscope_cli.extensions import logger
 from metagenscope_cli.tools.parsers import parse, UnparsableError
 
 
@@ -35,10 +35,10 @@ class SampleSource(object):
                 try:
                     data = parse(result_type, files_dict)
                 except UnparsableError:
-                    print(f'[parse-error] could not parse {result_type}', file=stderr)
+                    logger.error(f'[parse-error] could not parse {result_type}')
                     continue
                 except KeyError:
-                    print(f'[key-error] {sample_name} :: {result_type}', file=stderr)
+                    logger.error(f'[key-error] {sample_name} :: {result_type}')
 
                 result_payload = {
                     'result_type': result_type,

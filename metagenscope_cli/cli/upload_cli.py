@@ -1,8 +1,9 @@
 """CLI to upload data to a MetaGenScope Server."""
 
-from sys import stderr
 import click
+import click_log
 
+from metagenscope_cli.extensions import logger
 from metagenscope_cli.sample_sources.data_super_source import DataSuperSource
 from metagenscope_cli.sample_sources.file_source import FileSource
 
@@ -16,6 +17,7 @@ def upload():
 
 
 @upload.command()
+@click_log.simple_verbosity_option(logger)
 @add_authorization()
 @click.argument('metadata_csv')
 @click.argument('sample_names', nargs=-1)
@@ -29,12 +31,13 @@ def metadata(uploader, metadata_csv, sample_names):
         }
         try:
             response = uploader.knex.post('/api/v1/samples/metadata', payload)
-            click.echo(response)
+            logger.info(response)
         except Exception:  # pylint:disable=broad-except
-            print(f'[upload-metadata-error] {sample_name}', file=stderr)
+            logger.error(f'[upload-metadata-error] {sample_name}')
 
 
 @upload.command()
+@click_log.simple_verbosity_option(logger)
 @add_authorization()
 @click.option('-g', '--group', default=None)
 @click.option('--group-name', default=None)
@@ -47,6 +50,7 @@ def datasuper(uploader, group, group_name):
 
 
 @upload.command()
+@click_log.simple_verbosity_option(logger)
 @add_authorization()
 @click.option('-g', '--group', default=None)
 @click.argument('result_files', nargs=-1)

@@ -2,9 +2,10 @@
 
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
-from sys import stderr
 
 from requests.exceptions import HTTPError
+
+from metagenscope_cli.extensions import logger
 
 
 class Uploader:
@@ -51,8 +52,8 @@ class Uploader:
             """Attempt an upload, return the result."""
             date_now = datetime.now()
             try:
-                print(f'[uploader {date_now}] uploading {sample_name} :: {result_type}',
-                      file=stderr)
+                message = f'[uploader {date_now}] uploading {sample_name} :: {result_type}'
+                logger.info(message)
                 self.upload_sample_result(sample_uuid, result_type, data, dryrun=dryrun)
             except Exception as exception:  # pylint:disable=broad-except
                 result['type'] = 'error'
@@ -65,7 +66,7 @@ class Uploader:
         executor = ThreadPoolExecutor(max_workers=5)
         results = []
         for sample_name, tool_results in samples.items():
-            print(f'[uploader {datetime.now()}] creating sample {sample_name}', file=stderr)
+            logger.info(f'[uploader {datetime.now()}] creating sample {sample_name}')
             sample_uuid = self.create_sample(sample_name, group_uuid)
             futures = []
             for tool_result in tool_results:

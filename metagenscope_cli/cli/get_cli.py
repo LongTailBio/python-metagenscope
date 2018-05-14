@@ -1,6 +1,9 @@
 """CLI to get data from a MetaGenScope Server."""
 
 import click
+import click_log
+
+from metagenscope_cli.extensions import logger
 
 from .utils import add_authorization
 
@@ -19,10 +22,11 @@ def uuids():
 
 def report_uuid(name, uuid):
     """Report a uuid to the user."""
-    click.echo(f'{name}\t{uuid}')
+    logger.info(f'{name}\t{uuid}')
 
 
 @uuids.command(name='samples')
+@click_log.simple_verbosity_option(logger)
 @add_authorization()
 @click.argument('sample_names', nargs=-1)
 def sample_uuids(uploader, sample_names):
@@ -34,6 +38,7 @@ def sample_uuids(uploader, sample_names):
 
 
 @uuids.command(name='groups')
+@click_log.simple_verbosity_option(logger)
 @add_authorization()
 @click.argument('sample_group_names', nargs=-1)
 def sample_group_uuids(uploader, sample_group_names):

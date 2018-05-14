@@ -1,11 +1,17 @@
 """MetaGenScope CLI."""
 
 import click
+import click_log
+
+from metagenscope_cli.extensions import logger
 
 from .auth_cli import register, login, status
 from .get_cli import get
 from .run_cli import run
 from .upload_cli import upload
+
+
+click_log.basic_config(logger)
 
 
 @click.group()
