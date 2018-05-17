@@ -63,3 +63,4 @@ def status(uploader):
     """Get user status."""
     response = uploader.knex.get('/api/v1/auth/status')
     click.echo(response)
+

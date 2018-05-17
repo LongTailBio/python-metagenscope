@@ -11,6 +11,17 @@ def get():
     pass
 
 
+@get.command(name='orgs')
+@add_authorization()
+def get_orgs(uploader):
+    """Get a list of organizations."""
+    try:
+        response = uploader.knex.get('/api/v1/organizations', payload)
+        click.echo(response)
+    except HTTPError as exc:
+        print(f'{exc}', file=stderr)
+
+
 @get.group()
 def uuids():
     """Get UUIDs from the server."""
