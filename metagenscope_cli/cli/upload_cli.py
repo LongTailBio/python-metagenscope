@@ -49,10 +49,11 @@ def datasuper(uploader, group_uuid, group_name):
 @upload.command()
 @add_authorization()
 @click.option('-u', '--group-uuid', default=None)
+@click.option('-g', '--group-name', default=None)
 @click.argument('result_files', nargs=-1)
-def files(uploader, group_uuid, result_files):
+def files(uploader, group_uuid, group_name,  result_files):
     """Upload all samples from llist of tool result files."""
     sample_source = FileSource(files=result_files)
     samples = sample_source.get_sample_payloads()
 
-    batch_upload(uploader, samples, group_uuid=group_uuid)
+    batch_upload(uploader, samples, group_uuid=group_uuid, upload_group_name=group_name)

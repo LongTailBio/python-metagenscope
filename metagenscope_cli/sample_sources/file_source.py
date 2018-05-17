@@ -1,5 +1,6 @@
 """Samples from a list of files."""
 
+from sys import stderr
 from metagenscope_cli.sample_sources import SampleSource
 
 from .constants import UNSUPPORTED_RESULT_TYPES
@@ -27,16 +28,20 @@ class FileSource(SampleSource):
     def get_cataloged_files(self):
         """Return dictionary of files cataloged by sample and type."""
         catalog = {}
-        for file in self.files:
-            sample_name, result_type, file_type = parse_file_path(file)
+        for filename in self.files:
+            try:
+                sample_name, result_type, file_type = parse_file_path(filename)
+            except Exception:
+                print(f'Failed to parse {filename}', file=stderr)
+                continue
             if result_type in UNSUPPORTED_RESULT_TYPES:
                 continue
 
             try:
                 try:
-                    catalog[sample_name][result_type][file_type] = file
+                    catalog[sample_name][result_type][file_type] = filename
                 except KeyError:
-                    catalog[sample_name][result_type] = {file_type: file}
+                    catalog[sample_name][result_type] = {file_type: filename}
             except KeyError:
-                catalog[sample_name] = {result_type: {file_type: file}}
+                catalog[sample_name] = {result_type: {file_type: filename}}
         return catalog

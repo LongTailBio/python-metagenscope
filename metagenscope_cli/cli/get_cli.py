@@ -1,7 +1,7 @@
 """CLI to get data from a MetaGenScope Server."""
 
 import click
-
+from sys import stderr
 from .utils import add_authorization
 
 
@@ -39,6 +39,10 @@ def sample_uuids(uploader, sample_names):
 def sample_group_uuids(uploader, sample_group_names):
     """Get UUIDs for the given sample groups."""
     for sample_group_name in sample_group_names:
-        response = uploader.knex.get(f'/api/v1/sample_groups/getid/{sample_group_name}')
-        report_uuid(response['data']['sample_group_name'],
-                    response['data']['sample_group_uuid'])
+        try:
+            response = uploader.knex.get(f'/api/v1/sample_groups/getid/{sample_group_name}')
+            report_uuid(response['data']['sample_group_name'],
+                        response['data']['sample_group_uuid'])
+        except Exception:
+            print(f'Failed to get uuid for {sample_group_name}', file=stderr)
+            
