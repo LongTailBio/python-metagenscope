@@ -1,4 +1,5 @@
 import os
+from sys import stderr
 import click
 from requests.exceptions import HTTPError
 
@@ -13,12 +14,12 @@ def create():
     pass
 
 
-@create.command(name='group')
+@create.command(name='org')
 @add_authorization()
 @click.option('--private/--public', default=True)
 @click.argument('group_name')
 @click.argument('admin_email')
-def create_group(uploader, private, group_name, admin_email):
+def create_org(uploader, private, group_name, admin_email):
     """Create a new organization."""
     payload = {
         'name': group_name,
@@ -59,16 +60,14 @@ def add_group_to_org(uploader, group_name, org_uuid):
 
 @add.command(name='user-to-org')
 @add_authorization()
-@click.argument('group_name')
+@click.argument('user_id')
 @click.argument('org_uuid')
-def add_group_to_org(uploader, group_name, org_uuid):
+def add_user_to_org(uploader, user_id, org_uuid):
     """Add a group to an organization."""
-    response = uploader.knex.get(f'/api/v1/sample_groups/getid/{group_name}')
-    group_uuid = response['data']['sample_group_uuid']
-    payload = {'sample_group_uuid': group_uuid}
+    payload = {'user_id': user_id}
     try:
         response = uploader.knex.post(
-            f'/api/v1/organizations/{org_uuid}/sample_groups',
+            f'/api/v1/organizations/{org_uuid}/users',
             payload
         )
         click.echo(response)
