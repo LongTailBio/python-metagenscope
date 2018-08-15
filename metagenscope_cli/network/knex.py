@@ -43,3 +43,12 @@ class Knex(object):
                                 auth=self.auth)
         response.raise_for_status()
         return response.json()
+
+    def delete(self, endpoint):
+        """Perform authenticated DELETE request."""
+        url = self.host + endpoint
+        response = requests.delete(url,
+                                   headers=self.headers,
+                                   auth=self.auth)
+        response.raise_for_status()
+        return response.json()
