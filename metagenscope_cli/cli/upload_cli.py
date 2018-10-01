@@ -3,8 +3,7 @@
 from sys import stderr
 import click
 
-from metagenscope_cli.sample_sources.data_super_source import DataSuperSource
-from metagenscope_cli.sample_sources.file_source import FileSource
+from sample_source import DataSuperSource, FileSystemSource
 
 from .utils import batch_upload, add_authorization, parse_metadata
 
@@ -52,7 +51,7 @@ def datasuper(uploader, group, group_name):
 @click.argument('result_files', nargs=-1)
 def files(uploader, group, result_files):
     """Upload all samples from llist of tool result files."""
-    sample_source = FileSource(files=result_files)
+    sample_source = FileSystemSource(files=result_files)
     samples = sample_source.get_sample_payloads()
 
     batch_upload(uploader, samples, group_uuid=group)

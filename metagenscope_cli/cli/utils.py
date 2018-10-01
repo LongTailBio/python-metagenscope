@@ -7,10 +7,10 @@ from functools import wraps
 
 import click
 from requests.exceptions import HTTPError
+from sample_source.parser import parse_metadata_from_csv
 
 from metagenscope_cli.network import Knex, Uploader
 from metagenscope_cli.network.token_auth import TokenAuth
-from metagenscope_cli.tools.parse_metadata import parse_metadata_from_csv
 
 
 def parse_metadata(filename, sample_names):

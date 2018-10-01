@@ -13,6 +13,7 @@ Simply run:
 
     $ pipsi install .
 
+**Note:** this relies packages from the Longtail Bio PyPi index. See [`pangea-modules`](https://github.com/LongTailBio/pangea-modules/tree/develop#pangea-modules) for instructions on setting that up.
 
 ### Usage
 

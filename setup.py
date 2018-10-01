@@ -9,6 +9,7 @@ dependencies = [
     'configparser',
     'pandas',
     'datasuper==0.9.0',
+    'sample-source',
 ]
 
 dependency_links = [
