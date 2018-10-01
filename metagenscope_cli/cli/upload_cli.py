@@ -3,7 +3,7 @@
 from sys import stderr
 import click
 
-from sample_source import DataSuperSource, FileSystemSource
+from pangea_modules.sample_source import DataSuperSource, FileSystemSource
 
 from .utils import batch_upload, add_authorization, parse_metadata
 

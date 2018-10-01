@@ -9,7 +9,7 @@ dependencies = [
     'configparser',
     'pandas',
     'datasuper==0.9.0',
-    'sample-source',
+    'pangea_modules.sample-source',
 ]
 
 dependency_links = [

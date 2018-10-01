@@ -7,7 +7,7 @@ from functools import wraps
 
 import click
 from requests.exceptions import HTTPError
-from sample_source.parser import parse_metadata_from_csv
+from pangea_modules.sample_source.parser import parse_metadata_from_csv
 
 from metagenscope_cli.network import Knex, Uploader
 from metagenscope_cli.network.token_auth import TokenAuth
