@@ -57,3 +57,16 @@ def sample_group_uuids(uploader, sample_group_names):
         except Exception:
             print(f'Failed to get uuid for {sample_group_name}', file=stderr)
             
+
+@uuids.command(name='orgs')
+@add_authorization()
+@click.argument('org_names', nargs=-1)
+def org_uuids(uploader, org_names):
+    """Get UUIDs for the given sample groups."""
+    for org_name in org_names:
+        try:
+            response = uploader.knex.get(f'/api/v1/organizations/getid/{org_name}')
+            report_uuid(response['data']['organization_name'],
+                        response['data']['organization_uuid'])
+        except Exception:
+            print(f'Failed to get uuid for {org_name}', file=stderr)

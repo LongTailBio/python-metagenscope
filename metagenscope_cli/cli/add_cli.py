@@ -14,6 +14,24 @@ def create():
     pass
 
 
+@create.command(name='user')
+@click.argument('username')
+@click.argument('user_email')
+@click.argument('password')
+def create_user(uploader, username, user_email, password):
+    """Create a new user."""
+    payload = {
+        'username': username,
+        'email': user_email,
+        'password': password,
+    }
+    try:
+        response = uploader.knex.post('/api/v1/auth/register', payload)
+        click.echo(response)
+    except HTTPError as exc:
+        print(f'{exc}', file=stderr)
+
+
 @create.command(name='org')
 @add_authorization()
 @click.option('--private/--public', default=True)
@@ -42,9 +60,11 @@ def add():
 @add.command(name='group-to-org')
 @add_authorization()
 @click.argument('group_name')
-@click.argument('org_uuid')
-def add_group_to_org(uploader, group_name, org_uuid):
+@click.argument('org_name')
+def add_group_to_org(uploader, group_name, org_name):
     """Add a group to an organization."""
+    response = uploader.knex.get(f'/api/v1/organizations/getid/{org_name}')
+    org_uuid = response['data']['organization_uuid']
     response = uploader.knex.get(f'/api/v1/sample_groups/getid/{group_name}')
     group_uuid = response['data']['sample_group_uuid']
     payload = {'sample_group_uuid': group_uuid}
@@ -61,9 +81,11 @@ def add_group_to_org(uploader, group_name, org_uuid):
 @add.command(name='user-to-org')
 @add_authorization()
 @click.argument('user_id')
-@click.argument('org_uuid')
-def add_user_to_org(uploader, user_id, org_uuid):
+@click.argument('org_name')
+def add_user_to_org(uploader, user_id, org_name):
     """Add a group to an organization."""
+    response = uploader.knex.get(f'/api/v1/organizations/getid/{org_name}')
+    org_uuid = response['data']['organization_uuid']
     payload = {'user_id': user_id}
     try:
         response = uploader.knex.post(
@@ -74,3 +96,19 @@ def add_user_to_org(uploader, user_id, org_uuid):
     except HTTPError as exc:
         print(f'{exc}', file=stderr)
 
+
+@click.group()
+def delete():
+    pass
+
+
+@delete.command(name='group')
+@add_authorization()
+@click.argument('group_name')
+def delete_group(uploader, group_name):
+    """Add a group to an organization."""
+    response = uploader.knex.get(f'/api/v1/sample_groups/getid/{group_name}')
+    group_uuid = response['data']['sample_group_uuid']
+    click.echo(f'{group_name} :: {group_uuid}')
+    response = uploader.knex.delete(f'/api/v1/sample_groups/{group_uuid}')
+    click.echo(response)

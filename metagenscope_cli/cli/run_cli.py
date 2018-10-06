@@ -34,17 +34,21 @@ def group_middleware(uploader, uuid, group_name):
     click.echo(response)
 
 
-@middleware.command(name='sample')
+@middleware.command(name='samples')
 @add_authorization()
 @click.option('-u/-n', '--uuid/--name', default=False)
-@click.argument('sample_name')
-def sample_middleware(uploader, uuid, sample_name):
+@click.argument('sample_names', nargs=-1)
+def sample_middleware(uploader, uuid, sample_names):
     """Run middleware for a sample."""
-    if uuid:
-        sample_uuid = sample_name
-    else:
-        response = uploader.knex.get(f'/api/v1/samples/getid/{sample_name}')
-        sample_uuid = response['data']['sample_uuid']
-        print(f'{sample_name} :: {sample_uuid}', file=stderr)
-    response = uploader.knex.post(f'/api/v1/samples/{sample_uuid}/middleware', {})
-    click.echo(response)
+    for sample_name in sample_names:
+        if uuid:
+            sample_uuid = sample_name
+        else:
+            response = uploader.knex.get(f'/api/v1/samples/getid/{sample_name}')
+            sample_uuid = response['data']['sample_uuid']
+            print(f'{sample_name} :: {sample_uuid}', file=stderr)
+        try:
+            response = uploader.knex.post(f'/api/v1/samples/{sample_uuid}/middleware', {})
+            click.echo(response)
+        except Exception:
+            click.echo('Failed.')

@@ -32,7 +32,7 @@ class Knex(object):
             response = requests.post(url, headers=self.headers, auth=self.auth)
         if response.status_code >= 400:
             print(response.content, file=stderr)
-        response.raise_for_status()
+#        response.raise_for_status()
         return response.json()
 
     def get(self, endpoint):
@@ -41,5 +41,14 @@ class Knex(object):
         response = requests.get(url,
                                 headers=self.headers,
                                 auth=self.auth)
+        response.raise_for_status()
+        return response.json()
+
+    def delete(self, endpoint):
+        """Perform authenticated DELETE request."""
+        url = self.host + endpoint
+        response = requests.delete(url,
+                                   headers=self.headers,
+                                   auth=self.auth)
         response.raise_for_status()
         return response.json()
