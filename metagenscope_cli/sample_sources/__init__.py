@@ -39,7 +39,8 @@ class SampleSource(object):
                     continue
                 except KeyError:
                     print(f'[key-error] {sample_name} :: {result_type}', file=stderr)
-
+                    continue
+    
                 result_payload = {
                     'result_type': result_type,
                     'data': data,
