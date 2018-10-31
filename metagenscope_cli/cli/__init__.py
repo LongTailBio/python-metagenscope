@@ -7,6 +7,7 @@ from .auth_cli import register, login, status
 from .get_cli import get
 from .run_cli import run
 from .upload_cli import upload
+from .manage_cli import manage
 
 
 @click.group()
@@ -24,3 +25,4 @@ main.add_command(upload)
 main.add_command(create)
 main.add_command(add)
 main.add_command(delete)
+main.add_command(manage)
