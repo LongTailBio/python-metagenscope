@@ -1,7 +1,9 @@
 """
 MetaGenScope-CLI is used to upload data sets to the MetaGenScope web platform.
 """
+
 from setuptools import find_packages, setup
+from setuptools.command.install import install
 
 from pangea import __version__
 
@@ -20,6 +22,25 @@ dependency_links = [
 ]
 
 
+def readme():
+    """Print long description."""
+    with open('README.md') as readme_file:
+        return readme_file.read()
+
+
+class VerifyVersionCommand(install):
+    """Custom command to verify that the git tag matches our version."""
+
+    description = 'Verify that the git tag matches our version.'
+
+    def run(self):
+        tag = os.getenv('CIRCLE_TAG')
+
+        if tag != f'v{__version__}':
+            info = f'Git tag: {tag} does not match the version of this app: {__version__}'
+            sys.exit(info)
+
+
 setup(
     name='metagenscope',
     version=__version__,
@@ -28,7 +49,7 @@ setup(
     author='Benjamin Chrobot',
     author_email='benjamin.chrobot@alum.mit.edu',
     description='MetaGenScope-CLI is used to upload data sets to the MetaGenScope web platform.',
-    long_description=__doc__,
+    long_description=readme(),
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
     zip_safe=False,
@@ -53,5 +74,8 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Libraries :: Python Modules',
-    ]
+    ],
+    cmdclass={
+        'verify': VerifyVersionCommand,
+    },
 )
