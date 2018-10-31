@@ -34,8 +34,12 @@ def batch_upload(uploader, samples, group_uuid=None, upload_group_name=None):
         current_time = datetime.now().isoformat()
         if upload_group_name is None:
             upload_group_name = f'upload_group_{current_time}'
-        group_uuid = uploader.create_sample_group(upload_group_name)
-        click.echo(f'group created: <name: \'{upload_group_name}\' UUID: \'{group_uuid}\'>')
+        try:
+            result = uploader.knex.get(f'/api/v1/sample_groups/getid/{upload_group_name}')
+            group_uuid = result['data']['sample_group_uuid']
+        except HTTPError:
+            group_uuid = uploader.create_sample_group(upload_group_name)
+            click.echo(f'group created: <name: \'{upload_group_name}\' UUID: \'{group_uuid}\'>')
 
     try:
         results = uploader.upload_all_results(group_uuid, samples)

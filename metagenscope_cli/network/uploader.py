@@ -4,8 +4,6 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 from sys import stderr
 
-from requests.exceptions import HTTPError
-
 
 class Uploader:
     """Uploader class handles uploading samples to a server."""
@@ -31,9 +29,11 @@ class Uploader:
         try:
             response = self.knex.post('/api/v1/samples', payload)
             sample_uuid = response['data']['sample']['uuid']
-        except HTTPError:
+        except Exception:  # pylint: disable=broad-except
             response = self.knex.get(f'/api/v1/samples/getid/{sample_name}')
             sample_uuid = response['data']['sample_uuid']
+            # self.knex.post(f'/api/v1/sample_groups/{group_uuid}/samples',
+            #                {'sample_uuids': [sample_uuid]})
         return sample_uuid
 
     def upload_sample_result(self, sample_uuid, result_type, data, dryrun=False):
@@ -67,6 +67,7 @@ class Uploader:
         for sample_name, tool_results in samples.items():
             print(f'[uploader {datetime.now()}] creating sample {sample_name}', file=stderr)
             sample_uuid = self.create_sample(sample_name, group_uuid)
+            print(f'SAMPLE UUID: {sample_uuid}')
             futures = []
             for tool_result in tool_results:
                 result = {
