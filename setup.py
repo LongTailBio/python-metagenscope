@@ -3,6 +3,9 @@ MetaGenScope-CLI is used to upload data sets to the MetaGenScope web platform.
 """
 from setuptools import find_packages, setup
 
+from pangea import __version__
+
+
 dependencies = [
     'click',
     'requests',
@@ -11,13 +14,15 @@ dependencies = [
     'datasuper==0.9.0',
 ]
 
+
 dependency_links = [
     'git+https://github.com/dcdanko/DataSuper.git@develop#egg=datasuper-0.9.0',
 ]
 
+
 setup(
     name='metagenscope',
-    version='0.2.0',
+    version=__version__,
     url='https://github.com/bchrobot/python-metagenscope',
     license='MIT',
     author='Benjamin Chrobot',

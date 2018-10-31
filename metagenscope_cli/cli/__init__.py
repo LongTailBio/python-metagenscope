@@ -2,6 +2,7 @@
 
 import click
 
+from .. import __version__
 from .add_cli import create, add, delete
 from .auth_cli import register, login, status
 from .get_cli import get
@@ -11,6 +12,7 @@ from .manage_cli import manage
 
 
 @click.group()
+@click.version_option(__version__)
 def main():
     """Use to interact with the MetaGenScope web platform."""
     pass
