@@ -15,7 +15,7 @@ class TokenAuth(AuthBase):  # pylint: disable=too-few-public-methods
         if self.jwt_token is None:
             try:
                 self.jwt_token = config.get_token()
-            except KeyError:
+            except KeyError:  # pylint: disable=try-except-raise
                 # No saved token
                 raise
 

@@ -50,5 +50,5 @@ def sample_middleware(uploader, uuid, sample_names):
         try:
             response = uploader.knex.post(f'/api/v1/samples/{sample_uuid}/middleware', {})
             click.echo(response)
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             click.echo('Failed.')

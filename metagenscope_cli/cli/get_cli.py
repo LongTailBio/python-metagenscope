@@ -1,7 +1,10 @@
 """CLI to get data from a MetaGenScope Server."""
 
-import click
 from sys import stderr
+
+import click
+from requests.exceptions import HTTPError
+
 from .utils import add_authorization
 
 
@@ -16,7 +19,7 @@ def get():
 def get_orgs(uploader):
     """Get a list of organizations."""
     try:
-        response = uploader.knex.get('/api/v1/organizations', payload)
+        response = uploader.knex.get('/api/v1/organizations')
         click.echo(response)
     except HTTPError as exc:
         print(f'{exc}', file=stderr)
@@ -54,9 +57,9 @@ def sample_group_uuids(uploader, sample_group_names):
             response = uploader.knex.get(f'/api/v1/sample_groups/getid/{sample_group_name}')
             report_uuid(response['data']['sample_group_name'],
                         response['data']['sample_group_uuid'])
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             print(f'Failed to get uuid for {sample_group_name}', file=stderr)
-            
+
 
 @uuids.command(name='orgs')
 @add_authorization()
@@ -68,5 +71,5 @@ def org_uuids(uploader, org_names):
             response = uploader.knex.get(f'/api/v1/organizations/getid/{org_name}')
             report_uuid(response['data']['organization_name'],
                         response['data']['organization_uuid'])
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             print(f'Failed to get uuid for {org_name}', file=stderr)

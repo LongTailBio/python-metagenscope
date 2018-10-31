@@ -53,7 +53,7 @@ def datasuper(uploader, group_uuid, datasuper_group, group_name):
 @click.option('-g', '--group-name', default=None)
 @click.option('-m/-l', '--manifest/--file-list', default=False)
 @click.argument('result_files', nargs=-1)
-def files(uploader, group_uuid, group_name,  manifest, result_files):
+def files(uploader, group_uuid, group_name, manifest, result_files):
     """Upload all samples from llist of tool result files."""
     if manifest:
         result_file_list = []

@@ -31,7 +31,7 @@ class FileSource(SampleSource):
         for filename in self.files:
             try:
                 sample_name, result_type, file_type = parse_file_path(filename)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 print(f'Failed to parse {filename}', file=stderr)
                 continue
             if result_type in UNSUPPORTED_RESULT_TYPES:

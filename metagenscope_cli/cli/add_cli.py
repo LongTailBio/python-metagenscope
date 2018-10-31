@@ -1,16 +1,16 @@
-import os
+"""CLI to create and edit users and organizations."""
+
 from sys import stderr
+
 import click
 from requests.exceptions import HTTPError
-
-from metagenscope_cli.network.authenticator import Authenticator
-from metagenscope_cli.config import config
 
 from .utils import add_authorization
 
 
 @click.group()
 def create():
+    """Group create commands together."""
     pass
 
 
@@ -54,6 +54,7 @@ def create_org(uploader, private, group_name, admin_email):
 
 @click.group()
 def add():
+    """Group add commands together."""
     pass
 
 
@@ -99,6 +100,7 @@ def add_user_to_org(uploader, user_id, org_name):
 
 @click.group()
 def delete():
+    """Group delete commands together."""
     pass
 
 

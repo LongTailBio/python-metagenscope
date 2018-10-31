@@ -11,7 +11,7 @@ def parse_metadata_from_csv(csv_filename, sample_names):
     metadata_df = metadata_df.applymap(lambda x: x.strip())
     colnames = list(metadata_df.columns.values)
     metadata_df = metadata_df.set_index(colnames[0])
-    metadata_df = metadata_df.rename(index=lambda x: x.strip())    
+    metadata_df = metadata_df.rename(index=lambda x: x.strip())
     tbl = metadata_df.to_dict(orient='index')
     for sample_name in sample_names:
         if sample_name not in tbl:
