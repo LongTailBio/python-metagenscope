@@ -36,8 +36,9 @@ class VerifyVersionCommand(install):
     def run(self):
         tag = os.getenv('CIRCLE_TAG')
 
-        if tag != f'v{__version__}':
-            info = f'Git tag: {tag} does not match the version of this app: {__version__}'
+        if tag != 'v{0}'.format(__version__):
+            info = 'Git tag: {0} does not match the version of this app: {1}'
+            info = info.format(tag, __version__)
             sys.exit(info)
 
 
