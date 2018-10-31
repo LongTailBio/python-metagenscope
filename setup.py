@@ -5,7 +5,7 @@ MetaGenScope-CLI is used to upload data sets to the MetaGenScope web platform.
 from setuptools import find_packages, setup
 from setuptools.command.install import install
 
-from pangea import __version__
+from metagenscope_cli import __version__
 
 
 dependencies = [
