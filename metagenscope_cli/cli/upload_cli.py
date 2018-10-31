@@ -36,23 +36,33 @@ def metadata(uploader, metadata_csv, sample_names):
 
 @upload.command()
 @add_authorization()
-@click.option('-g', '--group', default=None)
-@click.option('--group-name', default=None)
-def datasuper(uploader, group, group_name):
+@click.option('-u', '--group-uuid', default=None)
+@click.option('-d', '--datasuper-group', default=None)
+@click.option('-g', '--group-name', default=None)
+def datasuper(uploader, group_uuid, datasuper_group, group_name):
     """Upload all samples from DataSuper repo."""
-    sample_source = DataSuperSource()
+    sample_source = DataSuperSource(group=datasuper_group)
     samples = sample_source.get_sample_payloads()
 
-    batch_upload(uploader, samples, group_uuid=group, upload_group_name=group_name)
+    batch_upload(uploader, samples, group_uuid=group_uuid, upload_group_name=group_name)
 
 
 @upload.command()
 @add_authorization()
-@click.option('-g', '--group', default=None)
+@click.option('-u', '--group-uuid', default=None)
+@click.option('-g', '--group-name', default=None)
+@click.option('-m/-l', '--manifest/--file-list', default=False)
 @click.argument('result_files', nargs=-1)
-def files(uploader, group, result_files):
+def files(uploader, group_uuid, group_name, manifest, result_files):
     """Upload all samples from llist of tool result files."""
+    if manifest:
+        result_file_list = []
+        for result_manifest in result_files:
+            with open(result_manifest) as rmf:
+                for line in rmf:
+                    result_file_list.append(line.strip())
+        result_files = result_file_list
     sample_source = FileSource(files=result_files)
     samples = sample_source.get_sample_payloads()
 
-    batch_upload(uploader, samples, group_uuid=group)
+    batch_upload(uploader, samples, group_uuid=group_uuid, upload_group_name=group_name)

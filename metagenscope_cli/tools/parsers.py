@@ -42,7 +42,8 @@ def parse(tool_type, schema):
     if tool_type in JSON_TOOLS:
         key = JSON_TOOLS[tool_type]
         return utils.jloads(schema[key])
-    elif tool_type in SIMPLE_PARSE:
+
+    if tool_type in SIMPLE_PARSE:
         func = SIMPLE_PARSE[tool_type][0]
         fnames = [schema[key] for key in SIMPLE_PARSE[tool_type][1:]]
         return func(*fnames)
