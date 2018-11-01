@@ -4,7 +4,7 @@ from sys import stderr
 from metagenscope_cli.tools.parsers import parse, UnparsableError
 
 
-class SampleSource(object):
+class SampleSource:
     """Base SampleSource interface."""
 
     def get_cataloged_files(self):
@@ -39,6 +39,10 @@ class SampleSource(object):
                     continue
                 except KeyError:
                     print(f'[key-error] {sample_name} :: {result_type}', file=stderr)
+                    continue
+                except ValueError:
+                    print(f'[value-error] {sample_name} :: {result_type}', file=stderr)
+                    continue
 
                 result_payload = {
                     'result_type': result_type,

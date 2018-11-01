@@ -34,7 +34,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Release History
 
-See `CHANGELOG.md`
+See [`CHANGELOG.md`](CHANGELOG.md)
 
 ## Authors
 

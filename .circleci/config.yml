@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  test_cli:
     docker:
       - image: themattrix/tox
 
@@ -28,3 +28,67 @@ jobs:
           name: Run pylint
           command: tox -e pylint
           when: always
+
+  build_release:
+    docker:
+      - image: circleci/python:3.6
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}-{{ checksum "makefile" }}
+
+      - run:
+          name: Install requirements
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+
+      - save_cache:
+          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}-{{ checksum "makefile" }}
+          paths:
+            - "venv"
+
+      - run:
+          name: Verify git tag vs. version
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            python setup.py verify
+
+      - run:
+          name: Init .pypirc
+          command: |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = $PYPI_USERNAME" >> ~/.pypirc
+            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+
+      - run:
+          name: Create packages
+          command: |
+            make package
+
+      - run:
+          name: Upload to pypi
+          command: |
+            . venv/bin/activate
+            twine upload dist/*
+
+
+workflows:
+  version: 2
+
+  cli_cd:
+    jobs:
+      - test_cli
+      - build_release:
+          context: pypi
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+          requires:
+            - test_cli
