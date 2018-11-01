@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.3.1] - 2018-11-01
+### Fixed
+- Tag-based CI execution.
+
 ## [0.3.0] - 2018-11-01
 ### Added
 - Continuous deployment to PyPI.
@@ -25,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Basic Click project structure.
 
-[Unreleased]: https://github.com/bchrobot/python-metagenscope/compare/v0.3.0...develop
+[Unreleased]: https://github.com/bchrobot/python-metagenscope/compare/v0.3.1...develop
+[0.3.1]: https://github.com/LongTailBio/python-metagenscope/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/LongTailBio/python-metagenscope/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/LongTailBio/python-metagenscope/compare/0.0.1...v0.2.0
