@@ -82,7 +82,7 @@ workflows:
 
   cli_cd:
     jobs:
-      - test_cli
+      - test_cli:
           filters:  # required since `build_release` has tag filters AND requires `test_cli`
             tags:
               only: /.*/
