@@ -23,7 +23,7 @@ class Uploader:
         """Create Sample on remote server."""
         payload = {
             "name": sample_name,
-            "sample_group_uuid": group_uuid,
+            "library_uuid": group_uuid,
             "metadata": metadata,
         }
         try:
@@ -32,8 +32,8 @@ class Uploader:
         except Exception:  # pylint: disable=broad-except
             response = self.knex.get(f'/api/v1/samples/getid/{sample_name}')
             sample_uuid = response['data']['sample_uuid']
-            # self.knex.post(f'/api/v1/sample_groups/{group_uuid}/samples',
-            #                {'sample_uuids': [sample_uuid]})
+            self.knex.post(f'/api/v1/sample_groups/{group_uuid}/samples',
+                           {'sample_uuids': [sample_uuid]})
         return sample_uuid
 
     def upload_sample_result(self, sample_uuid, result_type, data, dryrun=False):
