@@ -2,7 +2,7 @@
 
 ![CircleCI master](https://img.shields.io/circleci/project/github/LongTailBio/python-metagenscope/master.svg)
 [![PyPI](https://img.shields.io/pypi/v/metagenscope.svg)](https://pypi.org/project/metagenscope/)
-![PyPI - Python version](https://img.shields.io/pypi/pyversions/Django.svg)
+![PyPI - Python version](https://img.shields.io/pypi/pyversions/metagenscope.svg)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/metagenscope.svg)
 ![Github license](https://img.shields.io/github/license/longtailbio/python-metagenscope.svg)
 
